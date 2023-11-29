@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Get Selected Text Example</title>
+    <script>
+      function getSelectedText() {
+        var selected = window.getSelection();
+        console.log("selected", selected);
+        var selectedText = window.getSelection().toString();
+        console.log("selectedText", selectedText);
+        var rangeCount = window.getSelection().rangeCount;
+        console.log("rangeCount:", rangeCount);
+      }
+
+      setInterval(() => {
+        console.log(window.getSelection());
+      }, 5000);
+    </script>
+  </head>
+  <body>
+    <h1>Get Selected Text Example</h1>
+    <p>
+      Select some text in the paragraph below and click the button to retrieve
+      it.
+    </p>
+    <p id="paragraph">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+    </p>
+    <input />
+    <button onclick="getSelectedText()">Get Selected Text</button>
+  </body>
+</html>

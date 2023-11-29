@@ -1,0 +1,21 @@
+<script src="./kjua.min.js"></script>
+
+<script>
+  let ZcLogo = new Image();
+  ZcLogo.src = "./cloud2dLogo.png";
+  ZcLogo.onload = () => {
+    let a = kjua({
+      text: "153asdasdasdasdasdasd151315",
+      mode: "image",
+      render: "canvas",
+      crisp: true,
+      mSize: 25,
+      mPosX: 50,
+      mPosY: 50,
+      quiet: 0,
+      ecLevel: "H",
+      image: ZcLogo,
+    });
+    document.body.appendChild(a);
+  };
+</script>

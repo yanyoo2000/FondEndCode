@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Range Example</title>
+  </head>
+  <body>
+    <div id="container">
+      <p>This is a <strong>sample</strong> text</p>
+    </div>
+
+    <button onclick="highlightSelection()">Highlight</button>
+
+    <script>
+      function highlightSelection() {
+        // 创建一个Range对象
+        var range = document.createRange();
+
+        // 设置Range选中范围
+        var containerNode = document.getElementById("container");
+        let pNode = containerNode.firstElementChild;
+        var sampleNode = pNode.firstChild.nextSibling;
+        var sampleTextNode = pNode.firstChild.nextSibling.firstChild;
+        var textTextNode = sampleNode.nextSibling;
+
+        range.setStart(sampleTextNode, 0);
+        range.setEnd(textTextNode, textTextNode.length);
+
+        var highlightElement = document.createElement("span");
+        highlightElement.style.backgroundColor = "yellow";
+
+        var extractedContents = range.extractContents();
+        highlightElement.appendChild(extractedContents);
+
+        range.insertNode(highlightElement);
+      }
+    </script>
+  </body>
+</html>

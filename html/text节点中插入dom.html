@@ -1,0 +1,33 @@
+<div id="myDiv">This is some text.</div>
+<button onclick="insertElement()">Insert Element</button>
+
+<script>
+  function insertElement() {
+    var parent = document.getElementById("myDiv");
+    var text = parent.innerHTML;
+    var insertIndex = 7; // 设置要插入的位置索引
+
+    var beforeText = text.slice(0, insertIndex);
+    var afterText = text.slice(insertIndex);
+
+    var svgElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    svgElement.setAttribute("width", "100");
+    svgElement.setAttribute("height", "100");
+
+    var circleElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "circle"
+    );
+    circleElement.setAttribute("cx", "50");
+    circleElement.setAttribute("cy", "50");
+    circleElement.setAttribute("r", "40");
+    circleElement.setAttribute("fill", "red");
+
+    svgElement.appendChild(circleElement);
+
+    parent.innerHTML = beforeText + svgElement.outerHTML + afterText;
+  }
+</script>

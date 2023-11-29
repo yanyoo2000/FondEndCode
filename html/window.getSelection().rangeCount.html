@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example</title>
+  </head>
+  <body>
+    <p>Select some text from the first paragraph.</p>
+    <p>Select some text from the second paragraph.</p>
+    <script>
+      setInterval(() => {
+        var range = window.getSelection().getRangeAt(0);
+        var previousNode = range.startContainer.previousSibling;
+        console.log(previousNode);
+      }, 1000);
+    </script>
+  </body>
+  <input type="text" />
+</html>

@@ -1,0 +1,263 @@
+<style>
+
+  .zc-sdk-modal-mask {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .zc-sdk-modal * {
+    padding: 0;
+    margin: 0;
+  }
+
+  .zc-sdk-modal {
+    width: 400px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    background-color: aliceblue;
+    border-radius: 5px;
+    z-index: 99;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: all 0.5s;
+
+  }
+
+  .zc-sdk-modal .zc-sdk-modal-title {
+    height: 30px;
+    box-sizing: content-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 0 16px;
+  }
+  .zc-sdk-modal-title .zc-sdk-modal-close {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    line-height: 20px;
+    text-align: center;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .zc-sdk-modal-title .zc-sdk-modal-close:hover {
+    background: rgba(0, 0, 0, 0.2);
+  }
+
+  .zc-sdk-modal .zc-sdk-modal-main {
+    box-sizing: border-box;
+    padding: 16px;
+    height: calc(100% - 80px);
+    max-height: 60vh;
+    max-width: 60vw;
+    overflow: auto;
+    padding: 0;
+    margin: 0;
+  }
+
+  .zc-sdk-modal .zc-sdk-modal-footer {
+    height: 50px;
+    text-align: right;
+    box-sizing: border-box;
+    padding-right: 16px;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .zc-sdk-modal-footer button {
+    width: 80px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    border: none;
+    border-radius: 5px;
+    margin-left: 8px;
+  }
+
+  .zc-sdk-modal-footer button:hover {
+    background-color: #49a4ff;
+  }
+
+  .zc-sdk-modal-dwg-block{
+    margin: 5px;
+  }
+  .zc-sdk-modal-dwg-block:hover {
+    outline: 2px solid #49a4ff;
+  }
+  .zc-sdk-modal-dwg-block.originSelected {
+    background-color: #49a4ff;
+  }
+  .zc-sdk-modal-dwg-block.originSelected::after {
+    content: "基准图纸";
+    font-weight: 400;
+    margin-left: 10%;
+    color: white;
+  }
+  .zc-sdk-modal-dwg-block.referSelected {
+    background-color: #49a4ff;
+  }
+  .zc-sdk-modal-dwg-block.referSelected::after {
+    content: "参照图纸";
+    font-weight: 400;
+    margin-left: 10%;
+    color: white;
+  }
+</style>
+
+<script>
+  function Modal(options) {
+    options = Object.assign(
+      {
+        title: "标题",
+        backgroundColor: "#fff", // 背景颜色
+        mask: true, //是否显示遮罩层,
+        content: "弹框内容",
+        cancelText: "取消", //取消按钮文字
+        okText: "确认", // 确认按钮文字,
+        width: 400, //对话框的宽度
+        onCancel: this.closeModal, //取消按钮回调，默认是关闭弹框
+        onOk: () => {
+          console.log(originDwgName);
+          console.log(referDwgName);
+        },
+      },
+      options
+    );
+    this.options = options;
+
+    // 创建遮罩层
+    function createMask() {
+      let mask = document.createElement("div");
+      mask.className = "zc-sdk-modal-mask";
+      document.body.appendChild(mask);
+    }
+
+    // 创建modal弹框
+    function createModal() {
+      let modal = document.createElement("div"),
+        titleDom = document.createElement("div"),
+        main = document.createElement("div"),
+        footer = document.createElement("div"),
+        btn_l = document.createElement("button"),
+        btn_r = document.createElement("button");
+
+      let {
+        title,
+        content,
+        cancelText,
+        okText,
+        width,
+        onCancel,
+        onOk,
+        backgroundColor,
+      } = this.options;
+      modal.className = "zc-sdk-modal";
+      modal.style.width = width + "px";
+      modal.style.backgroundColor = backgroundColor;
+
+      titleDom.className = "zc-sdk-modal-title";
+      let closeIcon = document.createElement("span");
+      closeIcon.addEventListener("click", closeModal.bind(this));
+      closeIcon.className = "zc-sdk-modal-close";
+      closeIcon.innerHTML = "x";
+      titleDom.innerHTML = `<span>${title}</span>`;
+      titleDom.appendChild(closeIcon);
+
+      main.className = "zc-sdk-modal-main";
+      main.innerHTML = content;
+
+      footer.className = "zc-sdk-modal-footer";
+      btn_l.innerHTML = "取消";
+      btn_r.innerHTML = "确认";
+      footer.appendChild(btn_l);
+      footer.appendChild(btn_r);
+
+      onCancel = onCancel ? onCancel : this.closeModal;
+      btn_l.addEventListener("click", onCancel.bind(this));
+      btn_r.addEventListener("click", onOk);
+
+      modal.appendChild(titleDom);
+      modal.appendChild(main);
+      modal.appendChild(footer);
+
+      document.body.appendChild(modal);
+      setTimeout(() => {
+        modal.style.opacity = "1";
+        modal.style.transform = "translate(-50%, -50%) scale(1)";
+      }, 0);
+    }
+
+    // 关闭弹框
+    function closeModal(ev) {
+      let modal = ev.target.parentElement.parentElement;
+      let { mask } = this.options;
+      mask ? document.body.removeChild(document.querySelector(".zc-sdk-modal-mask")) : null;
+      document.body.removeChild(modal);
+    }
+
+    // 初始化
+    function init() {
+      let { mask } = this.options;
+      mask ? createMask() : null;
+      this.createModal();
+    }
+
+    Modal.prototype.init = init;
+    Modal.prototype.createModal = createModal;
+    Modal.prototype.closeModal = closeModal;
+
+    // 执行初始化方法
+    this.init();
+  }
+
+  let data = ["1.dwg", "2.dwg", "3.dwg", "4.dwg", "5.dwg"];
+  let content = "";
+  let originDwgName = "";
+  let referDwgName = "";
+  function selectFcmpDwg(event, index) {
+    if (
+      !originDwgName &&
+      !event.target.classList.contains("originSelected") &&
+      !event.target.classList.contains("referSelected")
+    ) {
+      event.target.classList.add("originSelected");
+      originDwgName = data[index];
+    } else if (
+      !referDwgName &&
+      !event.target.classList.contains("originSelected") &&
+      !event.target.classList.contains("referSelected")
+    ) {
+      event.target.classList.add("referSelected");
+      referDwgName = data[index];
+    } else if (event.target.classList.contains("originSelected")) {
+      event.target.classList.remove("originSelected");
+      originDwgName = "";
+    } else if (event.target.classList.contains("referSelected")) {
+      event.target.classList.remove("referSelected");
+      referDwgName = "";
+    } else {
+      return;
+    }
+  }
+
+  data.forEach((name, index) => {
+    content += `<h4 onclick="selectFcmpDwg(event,${index})" class='zc-sdk-modal-dwg-block'>${name}</h4>`;
+  });
+
+  setTimeout(() => {
+    let b = new Modal({
+      title: "选择两个进行对比的图纸",
+      content: content,
+    });
+  }, 1000);
+</script>

@@ -1,0 +1,43 @@
+<canvas id="canvas"></canvas>
+
+<style></style>
+<script>
+  let image = new Image();
+  image.src =
+    "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBzdGFuZGFsb25lPSJubyI/PjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+PHN2ZyB0PSIxNjg2NjI1MzAwNTcxIiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjEwNDc1IiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgd2lkdGg9IjIwMCIgaGVpZ2h0PSIyMDAiPjxwYXRoIGQ9Ik01MDYuODggNjkuMTJjLTI0Ny4yOTYgMC00NDggMjAwLjcwNC00NDggNDQ4czIwMC43MDQgNDQ4IDQ0OCA0NDggNDQ4LTIwMC43MDQgNDQ4LTQ0OFM3NTQuMTc2IDY5LjEyIDUwNi44OCA2OS4xMnogbTMwOC4yMjQgMzU5LjkzNmMtNC42MDggOC43MDQtMTMuMzEyIDE1LjM2LTI4LjY3MiAxNS4zNkg3NDIuNGMtNS42MzIgMC0xMS4yNjQgMi41Ni0xNC44NDggNi42NTZMNjA5LjI4IDU4OS44MjRjLTEwLjc1MiAxMi44LTE3LjQwOCAyOC42NzItMTguNDMyIDQ1LjU2OGwtNC4wOTYgNjcuNTg0Yy0wLjUxMiA5LjcyOC00LjA5NiAxOC40MzItMTAuNzUyIDI1LjYtNC42MDggNC42MDgtMTAuNzUyIDguNzA0LTE4LjQzMiA5LjcyOGgtMi41NmMtNy4xNjggMC0xMy44MjQtMy4wNzItMTguNDMyLTcuNjhMNDQ2Ljk3NiA2NDBsLTE0NS40MDggMTExLjYxNi03OC44NDggNjguNjA4Yy0wLjUxMiAwLjUxMi0wLjUxMiAwLjUxMi0xLjAyNCAwLjUxMi0xLjAyNCAwLjUxMi0zLjA3MiAxLjUzNi01LjYzMiAyLjA0OGwtNC42MDggMS4wMjRjLTMuNTg0IDEuMDI0LTcuMTY4LTIuNTYtNi4xNDQtNi42NTYgMS4wMjQtMy4wNzIgMS41MzYtNS4xMiAyLjA0OC02LjE0NCAwLTAuNTEyIDAuNTEyLTEuMDI0IDEuMDI0LTEuNTM2TDI3MS4zNiA3MzYuMjU2bDExOC4yNzItMTU0LjExMi05MC42MjQtODkuNmMtNS42MzItNS42MzItOC43MDQtMTMuMzEyLTcuNjgtMjAuOTkyIDAuNTEyLTcuNjggNC42MDgtMTMuODI0IDkuNzI4LTE4LjQzMiA3LjE2OC02LjY1NiAxNS44NzItMTAuMjQgMjUuNi0xMC43NTJsNjcuNTg0LTQuMDk2YzE2Ljg5Ni0xLjAyNCAzMi43NjgtNy42OCA0NS41NjgtMTguNDMybDEzOC4yNC0xMTcuNzZjNC42MDgtMy41ODQgNi42NTYtOS4yMTYgNi42NTYtMTQuODQ4di0zOS40MjRjLTEuNTM2LTE4LjQzMiA2LjE0NC0yOC42NzIgMTUuMzYtMzMuMjggNS4xMi0yLjU2IDEwLjc1Mi00LjA5NiAxNS44NzItNC4wOTYgOS4yMTYgMCAxNy45MiAzLjU4NCAyNC41NzYgMTAuMjRsODMuNDU2IDgzLjk2OCAwLjUxMiAwLjUxMkw4MDguOTYgMzg4LjA5NmMxMC43NTIgMTAuNzUyIDEzLjMxMiAyNy42NDggNi4xNDQgNDAuOTZ6IiBwLWlkPSIxMDQ3NiI+PC9wYXRoPjwvc3ZnPg==";
+  image.onload = () => {
+    var context = document.querySelector("#canvas").getContext("2d");
+    var WIDTH = 500;
+    var HEIGHT = 500;
+    canvas.width = WIDTH;
+    canvas.height = HEIGHT;
+
+    var newCanvas = document.createElement("canvas");
+    newCanvas.width = 50;
+    newCanvas.height = 50;
+    var offscreenCtx = newCanvas.getContext("2d");
+    offscreenCtx.drawImage(image, 0, 0, 50, 50);
+    offscreenCtx.globalCompositeOperation = "source-in";
+    offscreenCtx.fillStyle = "red";
+    offscreenCtx.fillRect(0, 0, 50, 50);
+    context.drawImage(newCanvas, 0, 0, 50, 50);
+
+    var newCanvas = document.createElement("canvas");
+    newCanvas.width = 50;
+    newCanvas.height = 50;
+    var offscreenCtx = newCanvas.getContext("2d");
+    offscreenCtx.drawImage(image, 0, 0, 50, 50);
+    offscreenCtx.globalCompositeOperation = "source-in";
+    offscreenCtx.fillStyle = "red";
+    offscreenCtx.fillRect(0, 0, 50, 50);
+    context.drawImage(newCanvas, 150, 150, 50, 50);
+
+    var offscreenCanvas = new OffscreenCanvas(50, 50);
+    var offscreenCtx = offscreenCanvas.getContext("2d");
+    offscreenCtx.drawImage(image, 0, 0, 50, 50);
+    offscreenCtx.globalCompositeOperation = "source-in";
+    offscreenCtx.fillStyle = "blue";
+    offscreenCtx.fillRect(0, 0, 50, 50);
+    context.drawImage(offscreenCanvas, 100, 100, 50, 50);
+  };
+</script>

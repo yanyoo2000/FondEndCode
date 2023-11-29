@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1 id="heading">Hello, World!</h1>
+    <p id="paragraph">This is a demo of manipulating the Selection object.</p>
+    <button onclick="replaceSelectionWithLastChild()">
+      Replace Selection with Last Child
+    </button>
+
+    <script>
+      function replaceSelectionWithLastChild() {
+        var selection = window.getSelection(); // 获取当前的 Selection 对象
+        var range = selection.getRangeAt(0); // 获取选中区域的 Range 对象
+        var container = range.commonAncestorContainer; // 获取选中区域的父容器元素
+
+        // 检查选中区域是否为元素节点，若不是则无法替换
+        if (container.nodeType !== Node.ELEMENT_NODE) {
+          console.log("Selection is not an element node.");
+          return;
+        }
+
+        // 获取选中区域内的所有元素子节点
+        var childElements = container.getElementsByTagName("*");
+
+        // 获取最后一个子元素
+        var lastChild = childElements[childElements.length - 1];
+
+        // 创建一个新的文本节点，将最后一个子元素的内容作为文本节点的值
+        var newText = document.createTextNode(lastChild.innerHTML);
+
+        // 将选中区域的 Range 对象的内容替换为新的文本节点
+        range.deleteContents();
+        range.insertNode(newText);
+
+        // 清除选中区域
+        selection.removeAllRanges();
+      }
+
+      setInterval(() => {
+        console.log(window.getSelection());
+      }, 1000);
+    </script>
+  </body>
+</html>

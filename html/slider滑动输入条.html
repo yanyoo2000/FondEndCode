@@ -1,0 +1,61 @@
+<div class="slider" id="slider">
+  <div class="track" id="track"></div>
+  <div class="thumb" id="thumb"></div>
+</div>
+
+<style>
+  .slider {
+    width: 300px;
+    height: 10px;
+    background: #ddd;
+    position: relative;
+  }
+
+  .track {
+    position: absolute;
+    height: 10px;
+    background: #f00;
+  }
+
+  .thumb {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #00f;
+    top: -5px;
+  }
+</style>
+
+<script>
+  var slider = document.getElementById("slider");
+  var track = document.getElementById("track");
+  var thumb = document.getElementById("thumb");
+  var isMouseDown = false; // 鼠标是否按下的标志
+
+  let refreshSlider = (e) => {
+    var rect = slider.getBoundingClientRect();
+    var x = e.clientX - rect.left; // 鼠标当前位置相对于滑动条的位置
+
+    if (x < 0) x = 0; // 如果x小于0，设置x为0
+    if (x > rect.width) x = rect.width; // 如果x大于滑动条的宽度，设置x为滑动条的宽度
+
+    track.style.width = x + "px";
+    thumb.style.left = x - 10 + "px"; // 减去滑块宽度的一半使得滑块中心在鼠标当前位置
+    console.log(((x / rect.width) * 100).toFixed(2) + "%");
+  };
+
+  slider.addEventListener("mousedown", function (e) {
+    isMouseDown = true;
+    refreshSlider(e);
+  });
+  document.addEventListener("mouseup", function (e) {
+    isMouseDown = false; 
+  });
+
+  // 鼠标移动事件
+  document.addEventListener("mousemove", function (e) {
+    if (isMouseDown) {
+      refreshSlider(e);
+    }
+  });
+</script>
